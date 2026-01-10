@@ -18,6 +18,7 @@ internal class Programm
           {
             var connect = new  DownLoaderFiles(httpclient);
             await connect.DownloadFile(fileurl,savePath);
+            System.Console.WriteLine("Works");
           }
     }
 }
