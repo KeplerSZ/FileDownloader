@@ -1,14 +1,17 @@
-﻿using System.Reflection.Metadata;
+﻿using FileDownloader;
+using System.Reflection.Metadata;
+using System.Runtime;
 
 internal class Programm
 {
     private static async Task Main(string[] args)
     {
         Console.WriteLine("Работа с сайтом");
+        var settings = LoadSettings("settingsclass.json");
         var logger = new FileLogger();
-        string fileurl = "https://ric.consultant.ru/materials/?path=Soft";
-        //string fileurl = "https://ric.consultant.ru/materials/Download";
-        // Базовый URL для скачивания (ОБРАТИТЕ ВНИМАНИЕ!)
+        //string fileurl = "https://ric.consultant.ru/materials/?path=Soft";
+        string fileurl = settings.ConsultantSettings.fileurl;
+        // Базовый URL для скачивания
         string downloadBaseUrl = "https://ric.consultant.ru/materials/Download/";
         string savePath = Path.Combine(
           Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
@@ -40,7 +43,7 @@ internal class Programm
         } 
         using var httpclient = new HttpClient();
         var connector = new ConnectToSite(httpclient,logger);
-        connector.SetupBasicAuth("", "");
+        connector.SetupBasicAuth("ric380zsa", "exh23m7q");
         logger.Log("Запуск скачки");
          if (await connector.TestAuth())
           {
@@ -49,5 +52,12 @@ internal class Programm
             await downloader.DownloadLatestUpgradeFile(fileurl,savePath,downloadBaseUrl);
             System.Console.WriteLine("Works");
           }
+    }
+    static Settings LoadSettings(string json) {
+    
+        string jsonText = File.ReadAllText(json);
+        var settings = System.Text.Json.JsonSerializer.Deserialize<Settings>(jsonText);
+        
+        return settings;
     }
 }

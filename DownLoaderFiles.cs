@@ -37,7 +37,14 @@ public class  DownLoaderFiles
             // Формируем полный URL и путь сохранения
             string fullUrl =  downloadBaseUrl + latestFile;
             string savePath = Path.Combine(saveDirectory, latestFile);
-            
+            if (File.Exists(savePath))
+            {
+                Console.WriteLine($"Файл уже скачан: {latestFile}");
+                _fileLogger.Log($"Файл уже существует, пропускаю: {latestFile}");
+                return; // Не скачиваем повторно
+            }
+            Console.WriteLine($"Найден новый файл: {latestFile}");
+            Console.WriteLine($"Дата в имени: {ExtractDateFromFileName(latestFile):dd/MM/yyyy}");
             // Скачиваем файл
             await DownloadFile(fullUrl, savePath);
         }

@@ -1,0 +1,13 @@
+{
+  "ConsultantSettings": {
+    "fileurl": "https://ric.consultant.ru/materials/?path=Soft",
+    "downloadBaseUrl": "https://ric.consultant.ru/materials/Download/",
+    "Username": "ric380zsa",
+    "Password": "",
+    "TestUrl": "https://ric.consultant.ru"
+  },
+  "DownloadSettings": {
+    "DownloadFolder": "FileDownloader/Downloads",
+    "LogFolder": "FileDownloader/Logs"
+  }
+}
