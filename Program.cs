@@ -12,12 +12,18 @@ internal class Programm
         //string fileurl = "https://ric.consultant.ru/materials/?path=Soft";
         string fileurl = settings.ConsultantSettings.fileurl;
         // Базовый URL для скачивания
-        string downloadBaseUrl = "https://ric.consultant.ru/materials/Download/";
+        string downloadBaseUrl = settings.ConsultantSettings.downloadBaseUrl;
+        
+        // string savePath = Path.Combine(
+        //   Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+        //    "FileDownloader",
+        //    "Downloads"  
+        //   );
         string savePath = Path.Combine(
-          Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-           "FileDownloader",
-           "Downloads"  
-          );
+           Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            settings.DownloadSettings.DownloadFolder
+             
+           );
          // Создаем папку, если не существует
         if (!Directory.Exists(savePath))
         {
@@ -42,8 +48,10 @@ internal class Programm
             Console.WriteLine($"Ошибка прав доступа: {ex.Message}");
         } 
         using var httpclient = new HttpClient();
+        // var connector = new ConnectToSite(httpclient,logger);
+        // connector.SetupBasicAuth("ric380zsa", "exh23m7q");
         var connector = new ConnectToSite(httpclient,logger);
-        connector.SetupBasicAuth("ric380zsa", "exh23m7q");
+        connector.SetupBasicAuth(settings.ConsultantSettings.Username, settings.ConsultantSettings.Password );
         logger.Log("Запуск скачки");
          if (await connector.TestAuth())
           {
